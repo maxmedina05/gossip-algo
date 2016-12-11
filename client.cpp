@@ -12,11 +12,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include "myconfig.h"
+#include "packet.h"
 
 void connectionHandler(int i, int sockfd) {
   char sendBuffer[BUFFER_SIZE];
   char recvBuffer[BUFFER_SIZE];
   int bytesRecived;
+  Packet packet;
 
   if(i == 0){
     fgets(sendBuffer, BUFFER_SIZE, stdin);
@@ -28,7 +30,11 @@ void connectionHandler(int i, int sockfd) {
   } else {
     bytesRecived = recv(sockfd, recvBuffer, BUFFER_SIZE, 0);
     recvBuffer[bytesRecived] = '\0';
-    printf("%s\n", recvBuffer);
+    // printf("%s", recvBuffer);
+    packet = buildPacket(recvBuffer);
+
+    printPacket(packet);
+
     fflush(stdout);
   }
 }
