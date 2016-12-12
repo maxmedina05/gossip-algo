@@ -17,7 +17,8 @@ int main(int argc, char *argv[]){
   int friendsCount = 2;
   char *friends[] = {
     "10.0.0.19",
-    "10.0.0.34"
+    "10.0.0.34",
+    "10.0.0.31",
   };
 
   int socketDesc, newSocket, c;
@@ -65,15 +66,15 @@ int main(int argc, char *argv[]){
   return 0;
 }
 
-void connectionHandler(int socket, char* hostIpAddress, char* friends[], int cf) {
+void connectionHandler(int sock, char* hostIpAddress, char* friends[], int cf) {
   int bytesRecived;
   char recvBuffer[BUFFER_SIZE];
   char message[100];
   char lastMessage[100];
   // sprintf(message, "Connection established with %s host.\n", hostIpAddress);
-  // write(socket, message, strlen(message));
+  // write(sock, message, strlen(message));
 
-  while((bytesRecived = recv(socket, recvBuffer, BUFFER_SIZE, 0)) > 0) {
+  while((bytesRecived = recv(sock, recvBuffer, BUFFER_SIZE, 0)) > 0) {
     // printf("buffersize: %d\n", bytesRecived);
 
     recvBuffer[bytesRecived] = '\0';
@@ -83,10 +84,10 @@ void connectionHandler(int socket, char* hostIpAddress, char* friends[], int cf)
       char str[100];
       if(isFileHere(recvBuffer)) {
          sprintf(str, "1 - File was found on %s!\n", hostIpAddress);
-        write(socket , str , strlen(str));
+        write(sock , str , strlen(str));
       } else {
         sprintf(str, "1 - File was not found on %s!\n", hostIpAddress);
-        write(socket , str , strlen(str));
+        write(sock , str , strlen(str));
 
         // Search on another node
         for(int i = 0; i < cf; i++){
