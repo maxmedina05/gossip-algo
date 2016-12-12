@@ -73,15 +73,19 @@ void connectionHandler(int socket, char* hostIpAddress, char* friends[], int cf)
   // write(socket, message, strlen(message));
 
   while((bytesRecived = recv(socket, recvBuffer, BUFFER_SIZE, 0)) > 0) {
-    recvBuffer[bytesRecived-2] = '\0';
+    // printf("buffersize: %d\n", bytesRecived);
+    recvBuffer[bytesRecived] = '\0';
+
     printf("recvBuffer: %s\n", recvBuffer);
     if(isFileHere(recvBuffer)) {
-      char str[100] = "File was found!";
+      char str[100] = "1 - File was found!\n";
       write(socket , str , strlen(str));
     } else {
-      char str[100] = "File was not found!";
+      char str[100] = "0 - File was not found!\n";
       write(socket , str , strlen(str));
+
       // Search on another node
+
       askFriend(friends[0], recvBuffer);
     }
   }
@@ -132,7 +136,8 @@ int askFriend(char* friendAddr, char* filepath){
   }
 
   printf("friend %s reply: %s\n",friendAddr, friendReply);
-
+  fflush(stdout);
   close(sock);
-  return 0;
+  int res = friendReply[0] - '0';
+  return res;
 }

@@ -11,30 +11,26 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
-
-#define FOREVER 1
-#define PORT 3000
-#define BUFFER_SIZE 1024
+#include "myconfig.h"
+#include "packet.h"
 
 void connectionHandler(int i, int sockfd) {
   char sendBuffer[BUFFER_SIZE];
   char recvBuffer[BUFFER_SIZE];
   int bytesRecived;
+  Packet packet;
 
   if(i == 0){
     fgets(sendBuffer, BUFFER_SIZE, stdin);
     if(strcmp(sendBuffer, "quit()\n") == 0) {
       exit(0);
     } else {
-      int len = strlen(sendBuffer);
-      sendBuffer[len-1] = '\0';
-      // printf("buffersize: %d\n", strlen(sendBuffer));
       send(sockfd, sendBuffer, strlen(sendBuffer), 0);
     }
   } else {
     bytesRecived = recv(sockfd, recvBuffer, BUFFER_SIZE, 0);
     recvBuffer[bytesRecived] = '\0';
-    printf("recvBuffer: %s", recvBuffer);
+    printf("%s", recvBuffer);
     // packet = buildPacket(recvBuffer);
 
     // printPacket(packet);
