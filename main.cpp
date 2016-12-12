@@ -77,11 +77,12 @@ void connectionHandler(int socket, char* hostIpAddress, char* friends[], int cf)
     recvBuffer[bytesRecived] = '\0';
 
     printf("recvBuffer: %s\n", recvBuffer);
+    char str[100];
     if(isFileHere(recvBuffer)) {
-      char str[100] = "1 - File was found!\n";
+       sprintf(str, "1 - File was found on %s!\n", hostIpAddress);
       write(socket , str , strlen(str));
     } else {
-      char str[100] = "0 - File was not found!\n";
+      sprintf(str, "1 - File was not found on %s!\n", hostIpAddress);
       write(socket , str , strlen(str));
 
       // Search on another node
