@@ -69,25 +69,31 @@ void connectionHandler(int socket, char* hostIpAddress, char* friends[], int cf)
   int bytesRecived;
   char recvBuffer[BUFFER_SIZE];
   char message[100];
-  sprintf(message, "Connection established with %s host.\n", hostIpAddress);
+  char lastMessage[100];
+  // sprintf(message, "Connection established with %s host.\n", hostIpAddress);
   // write(socket, message, strlen(message));
 
   while((bytesRecived = recv(socket, recvBuffer, BUFFER_SIZE, 0)) > 0) {
     // printf("buffersize: %d\n", bytesRecived);
+
     recvBuffer[bytesRecived] = '\0';
+    if(strcmp(lastMessage, recvBuffer) != 0) {
+      strcpy(lastMessage, recvBuffer);
+      // printf("recvBuffer: %s\n", recvBuffer);
+      char str[100];
+      if(isFileHere(recvBuffer)) {
+         sprintf(str, "1 - File was found on %s!\n", hostIpAddress);
+        write(socket , str , strlen(str));
+      } else {
+        sprintf(str, "1 - File was not found on %s!\n", hostIpAddress);
+        write(socket , str , strlen(str));
 
-    printf("recvBuffer: %s\n", recvBuffer);
-    char str[100];
-    if(isFileHere(recvBuffer)) {
-       sprintf(str, "1 - File was found on %s!\n", hostIpAddress);
-      write(socket , str , strlen(str));
-    } else {
-      sprintf(str, "1 - File was not found on %s!\n", hostIpAddress);
-      write(socket , str , strlen(str));
-
-      // Search on another node
-
-      askFriend(friends[0], recvBuffer);
+        // Search on another node
+        for(int i = 0; i < cf; i++){
+          if(strcmp(hostIpAddress, friends[i]) == 0) continue;
+          askFriend(friends[i], recvBuffer);
+        }
+      }
     }
   }
 
