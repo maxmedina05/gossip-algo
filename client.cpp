@@ -32,7 +32,7 @@ void connectionHandler(int i, int sockfd) {
     recvBuffer[bytesRecived] = '\0';
     // printf("%s", recvBuffer);
     packet = buildPacket(recvBuffer);
-
+    
     printPacket(packet);
 
     fflush(stdout);
