@@ -26,3 +26,12 @@ def getMax(arr):
     return max
 
 solution(0)
+
+def bestSolution(arr):
+    r = 0
+    for i in range(len(arr)):
+        r = r ^ arr[i]
+    return r
+
+#solution2([9, 3, 9, 3, 9, 7, 9])
+bestSolution([9, 3, 9, 3, 9, 7, 9])
