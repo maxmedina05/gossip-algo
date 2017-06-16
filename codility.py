@@ -35,3 +35,18 @@ def bestSolution(arr):
 
 #solution2([9, 3, 9, 3, 9, 7, 9])
 bestSolution([9, 3, 9, 3, 9, 7, 9])
+
+#lesson 3
+function solution(A, K) {
+  if(A.length == 0)
+    return [];
+  while(K-- > 0) {
+    var last = A.pop();
+    A.unshift(last);
+  }
+  return A;
+}
+
+// var x = solution( [3, 8, 9, 7, 6], 0);
+var x = solution( [], 1);
+console.log(x);
