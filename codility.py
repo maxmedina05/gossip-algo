@@ -50,3 +50,15 @@ function solution(A, K) {
 // var x = solution( [3, 8, 9, 7, 6], 0);
 var x = solution( [], 1);
 console.log(x);
+
+#lesson 3 best solution
+    function bestSolution(A){
+      var N = A.length + 1;
+      var r = N*((N+1)/2);
+
+      var x = 0;
+      for(var i=0; i<A.length; i++) {
+        x += A[i];
+      }
+      return r - x;
+    }
